@@ -1,6 +1,5 @@
 #!/bin/bash -eu
-# create commits-per-week data
-# from a repository
+# measure commits per week in a repository
 
 PATH+=:$(dirname $0)                                                 # extra exes
 proj=${1%.git}                                                       # trim ".git" if given
@@ -9,7 +8,6 @@ rm -rf $dir                                                          # cleanline
 git clone -q $proj                                                   # get the repo
 cd ${_##*/}                                                          # punctuation
 commits=$(git rev-list --all --count)                                # all commits
-echo $commits commits in $proj                                               
 first_commit=$(weeks_from_first_commit.py)                           # in weeks
 for week in $(seq $first_commit 0); do                               # every week
   git rev-list --all --count --before="$week weeks ago"              # cumulative
