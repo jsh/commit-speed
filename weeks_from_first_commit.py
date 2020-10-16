@@ -6,7 +6,7 @@ import shlex
 import subprocess
 
 latest_commit_date = date.today()
-command = "git log --all --date='format:%F' --format='%cd' --reverse master"
+command = "git log --all --date='format:%F' --format='%cd' --reverse"
 completed_process = subprocess.run(
     shlex.split(command), capture_output=True, text=True, check=True
 )
