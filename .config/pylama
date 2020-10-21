@@ -1,0 +1,13 @@
+[pylama]
+linters = pydocstyle,pycodestyle,mccabe,pylint,pyflakes,isort
+
+[pylama:pycodestyle]
+overgeneral_exceptions=Exception
+
+[pylama:pylint]
+persistent = yes
+reports=yes
+ignore = W0511  # TODOs
+
+[pylama:pydocstyle]
+ignore = D213  # mutually exclusive with D212
