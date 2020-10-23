@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
 """Print number of commits per week."""
 
-import os
+import sys
 from typing import List
 
 from git import Repo  # type: ignore
+
+from parse_args import parse_args
 
 SECONDS_PER_WEEK = 60 * 60 * 24 * 7
 
@@ -37,11 +39,28 @@ def commits_per_week(repo: Repo) -> List[int]:
     return commits_in_weeks
 
 
+def cums(counts: List[int]) -> List[int]:
+    """Turn a list of counts into a cumulative list.
+
+    :param list[int] counts: the list of counts
+    :returns: cumulative counts, e.g., [1,2,3] -> [1,3,6]
+    :rtype: list[int]
+    """
+    accumulator = 0
+    running_sums = []
+    for count in counts:
+        accumulator += count
+        running_sums.append(accumulator)
+    return running_sums
+
+
 def main():
     """The big tent."""
-    cwd = os.getcwd()
-    repo = Repo(cwd)
+    args = parse_args(sys.argv[1:])
+    repo = Repo(args.repo)
     cpw = commits_per_week(repo)
+    if args.cumulative:
+        cpw = cums(cpw)
     for commits in cpw:
         print(commits)
 
