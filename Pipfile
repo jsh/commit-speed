@@ -6,10 +6,12 @@ verify_ssl = true
 [dev-packages]
 
 [packages]
-black = "*"
 pylama = "*"
 pylama-pylint = "*"
 eradicate = "*"
+gitpython = "*"
+mypy = "*"
+black = "*"
 
 [requires]
 python_version = "3.8"
