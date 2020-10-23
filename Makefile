@@ -1,8 +1,6 @@
 # The usual
 
-ALL_PYTHON=$(wildcard *.py */*.py)
-PYTHON_PROBLEMS = $(wildcard problems/*.py)
-SOURCES=$(filter-out ${PYTHON_PROBLEMS}, ${ALL_PYTHON})
+SOURCES=$(wildcard *.py */*.py)
 
 all: lint test
 
