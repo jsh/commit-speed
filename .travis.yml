@@ -4,6 +4,7 @@ before_install:
     - python --version
     - pip3 install -U pip
     - pip3 install -U pytest
+    - pip3 install -U gitpython
     - pip3 install codecov
 script:
     - pytest
