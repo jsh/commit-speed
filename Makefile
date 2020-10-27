@@ -1,6 +1,7 @@
 # The usual
 
-SOURCES=$(wildcard *.py */*.py)
+ALL_PYTHON = $(wildcard *.py */*.py)
+SOURCES = $(filter-out tmp/%,$(ALL_PYTHON))
 
 all: lint test
 
