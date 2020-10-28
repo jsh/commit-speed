@@ -12,6 +12,9 @@ eradicate = "*"
 gitpython = "*"
 mypy = "*"
 black = "*"
+numpy = "*"
+scipy = "*"
+matplotlib = "*"
 
 [requires]
 python_version = "3.8"
