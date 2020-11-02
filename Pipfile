@@ -11,10 +11,10 @@ pylama-pylint = "*"
 eradicate = "*"
 gitpython = "*"
 mypy = "*"
-black = "*"
 numpy = "*"
 scipy = "*"
 matplotlib = "*"
+bandit = "*"
 
 [requires]
 python_version = "3.8"

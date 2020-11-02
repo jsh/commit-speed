@@ -1,11 +1,15 @@
 #!/usr/bin/env python3
 """Measure effective authors over time."""
 import shlex
-import subprocess
+import subprocess  # nosec
 import sys
+from typing import List, Tuple
+
+ShortlogEntry = Tuple[int, str]
+ShortlogList = List[ShortlogEntry]
 
 
-def fetch_shortlog(start_week, end_week):
+def fetch_shortlog(start_week: int, end_week: int) -> List[str]:
     """Return a list of authors and commit counts
     during the timespan start_week weeks ago to end_week weeks ago
     Each list element is "Author count"
@@ -16,7 +20,7 @@ def fetch_shortlog(start_week, end_week):
     timespan = f"--since='{start_week} weeks ago' --until='{end_week} weeks ago'"
     command = f"git shortlog -ns --all {timespan}"
 
-    completed_process = subprocess.run(
+    completed_process = subprocess.run(  # nosec
         shlex.split(command),
         capture_output=True,
         text=True,
@@ -27,7 +31,7 @@ def fetch_shortlog(start_week, end_week):
     return completed_process.stdout.split("\n")[:-1]  # trim off the last, empty line
 
 
-def effective_authors(entries):
+def effective_authors(entries: List[str]) -> float:
     """Weighted number of authors.
     Suppose there are 300 commits.
     Three authors with 100 commmits apiece will return 3.
@@ -35,8 +39,8 @@ def effective_authors(entries):
     """
     # TODO: illustrate with a doctest
     # trim down to just the counts
-    entries = [int(entry.split()[0]) for entry in entries]
-    return sum(entries) / entries[0]
+    nentries = [int(entry.split()[0]) for entry in entries]
+    return sum(nentries) / nentries[0]
 
 
 def main():

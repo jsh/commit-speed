@@ -1,39 +1,45 @@
 # The usual
 
-ALL_PYTHON = $(wildcard *.py */*.py)
-SOURCES = $(filter-out tmp/%,$(ALL_PYTHON))
+SOURCES := $(wildcard *.py)
+TESTS := $(wildcard t/*.py)
 
-all: lint test
+all: lint test requirements.txt
 
-lint: black mypy pylint pylama
+lint: black pylama bandit
+
+bandit:
+	bandit -q -s B101 ${SOURCES}
 
 black: isort
-	black -q ${SOURCES}
+	black -q ${SOURCES} ${TESTS}
 
 clean:
 	git clean -dfx --exclude=bin --exclude=problems --exclude=results
 
 coverage:
-	- pytest --cov --cov-report=html
+	- pytest -q --cov="." --cov-report=html
 	open htmlcov/index.html
 
 fixme:
-	pylint -rn ${SOURCES} | sort -t: -k2 -n -r
+	pylint -rn ${SOURCES} ${TESTS} | sort -t: -k2 -n -r
 
 isort:
-	isort ${SOURCES}
+	isort ${SOURCES} ${TESTS}
 
 mypy:
 	mypy ${PWD}
 
 pylama:
-	pylama -o .config/pylama ${SOURCES}
+	pylama -o .config/pylama ${SOURCES} ${TESTS}
 
 pylint:
-	pylint --disable=fixme -rn ${SOURCES} | sort -t: -k2 -n -r
+	pylint --disable=fixme,broad-except -rn ${SOURCES} ${TESTS} | sort -t: -k2 -n -r
+
+requirements.txt: ${SOURCES} ${TESTS}
+	pip freeze > requirements.txt
 
 test:
-	pytest
+	pytest -q
 
 
-.PHONY: all black clean fixme lint mypy pylint pylama isort test
+.PHONY: all bandit black clean fixme lint mypy pylint pylama isort test
